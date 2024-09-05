@@ -1,0 +1,17 @@
+{
+	"match": [
+		"run.sh"
+	],
+	"ignore": [
+		"ignore.txt"
+	],
+	"package": [
+		"config.json"
+	],
+	"actions": {
+		"run-test": [
+			"echo running",
+			"sh run-test.sh x y z"
+		]
+	}
+}
