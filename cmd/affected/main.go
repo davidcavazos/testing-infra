@@ -2,7 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"testing-infra/pkg/utils"
+
+	"github.com/davidcavazos/testing-infra/pkg/utils"
 )
 
 type StrategyMatrix struct {

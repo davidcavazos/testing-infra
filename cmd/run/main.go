@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"testing-infra/pkg/utils"
+
+	"github.com/davidcavazos/testing-infra/pkg/utils"
 )
 
 func main() {
