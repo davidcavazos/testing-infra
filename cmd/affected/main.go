@@ -6,8 +6,8 @@ import (
 	"github.com/davidcavazos/testing-infra/pkg/utils"
 )
 
-type StrategyMatrix struct {
-	Packages []string `json:"packages"`
+type Job struct {
+	Package string `json:"package"`
 }
 
 func main() {
@@ -35,7 +35,7 @@ func main() {
 	println(string(matrixJson))
 }
 
-func affected(config utils.Config, diffs []string) StrategyMatrix {
+func affected(config utils.Config, diffs []string) []Job {
 	// TODO(dcavazos): Detect affected changes more granularly with the diffs.
 	// TODO(dcavazos): If '.' (root diffs) in pkgs, return all packages.
 	packages := make(map[string]bool)
@@ -47,11 +47,9 @@ func affected(config utils.Config, diffs []string) StrategyMatrix {
 		packages[pkg] = true
 	}
 
-	var pkgs []string
+	jobs := make([]Job, 0, len(packages))
 	for pkg := range packages {
-		pkgs = append(pkgs, pkg)
+		jobs = append(jobs, Job{Package: pkg})
 	}
-	return StrategyMatrix{
-		Packages: pkgs,
-	}
+	return jobs
 }
