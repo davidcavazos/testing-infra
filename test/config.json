@@ -1,9 +1,9 @@
 {
 	"match": [
-		"test/*"
+		"*.sh"
 	],
 	"ignore": [
-		"*/ignore.txt"
+		"ignore.txt"
 	],
 	"package": [
 		"config.json"

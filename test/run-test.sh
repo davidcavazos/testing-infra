@@ -1,1 +1,1 @@
-echo "Running with args $@"
+echo "Running with args: $@"

@@ -8,9 +8,16 @@ import (
 )
 
 type Config struct {
-	Match   []string `json:"match"`
-	Ignore  []string `json:"ignore"`
+	// Filenames to ignore, can include wildcard `*` stars.
+	Match []string `json:"match"`
+
+	// Filenames to ignore, can include wildcard `*` stars.
+	Ignore []string `json:"ignore"`
+
+	// Filename to look for the root of a package.
 	Package []string `json:"package"`
+
+	// Actions to run including the given commands.
 	Actions map[string][]struct {
 		Command string   `json:"command"`
 		Args    []string `json:"args"`
@@ -35,6 +42,9 @@ func ParseConfig(configFile []byte) (Config, error) {
 	if err != nil {
 		return Config{}, err
 	}
+	if config.Match == nil {
+		config.Match = []string{"*"}
+	}
 	return config, nil
 }
 
@@ -48,7 +58,8 @@ func match(patterns []string, path string) bool {
 }
 
 func (c Config) Matches(path string) bool {
-	return match(c.Match, path) && !match(c.Ignore, path)
+	filename := filepath.Base(path)
+	return match(c.Match, filename) && !match(c.Ignore, filename)
 }
 
 func (c Config) isPackageDir(dir string) bool {
