@@ -7,10 +7,6 @@ import (
 	"github.com/davidcavazos/testing-infra/pkg/utils"
 )
 
-type Job struct {
-	Package string `json:"package"`
-}
-
 func main() {
 	usage := "usage: affected path/to/config.json [head-commit] [main-commit]"
 	configPath := utils.ArgRequired(1, usage)
@@ -36,20 +32,20 @@ func main() {
 	fmt.Println(string(matrixJson))
 }
 
-func affected(config utils.Config, diffs []string) []Job {
+func affected(config utils.Config, diffs []string) []string {
 	// TODO(dcavazos): Detect affected changes more granularly with the diffs.
-	packages := make(map[string]bool)
+	uniquePackages := make(map[string]bool)
 	for _, diff := range diffs {
 		if !config.Matches(diff) {
 			continue
 		}
 		pkg := config.FindPackage(diff)
-		packages[pkg] = true
+		uniquePackages[pkg] = true
 	}
 
-	jobs := make([]Job, 0, len(packages))
-	for pkg := range packages {
-		jobs = append(jobs, Job{Package: pkg})
+	packages := make([]string, 0, len(uniquePackages))
+	for pkg := range uniquePackages {
+		packages = append(packages, pkg)
 	}
-	return jobs
+	return packages
 }
