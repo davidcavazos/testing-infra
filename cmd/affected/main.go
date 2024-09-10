@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/davidcavazos/testing-infra/pkg/utils"
 )
@@ -32,7 +33,7 @@ func main() {
 		panic(err)
 	}
 
-	println(string(matrixJson))
+	fmt.Println(string(matrixJson))
 }
 
 func affected(config utils.Config, diffs []string) []Job {
