@@ -1,7 +1,4 @@
 {
-	"match": [
-		"*.sh"
-	],
 	"ignore": [
 		"ignore.txt"
 	],

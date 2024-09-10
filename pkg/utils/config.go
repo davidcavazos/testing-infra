@@ -62,7 +62,7 @@ func (c Config) Matches(path string) bool {
 	return match(c.Match, filename) && !match(c.Ignore, filename)
 }
 
-func (c Config) isPackageDir(dir string) bool {
+func (c Config) IsPackageDir(dir string) bool {
 	for _, filename := range c.Package {
 		packageFile := filepath.Join(dir, filename)
 		if fileExists(packageFile) {
@@ -74,7 +74,7 @@ func (c Config) isPackageDir(dir string) bool {
 
 func (c Config) FindPackage(path string) string {
 	dir := filepath.Dir(path)
-	if dir == "." || c.isPackageDir(dir) {
+	if dir == "." || c.IsPackageDir(dir) {
 		return dir
 	}
 	return c.FindPackage(dir)

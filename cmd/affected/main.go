@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/fs"
+	"path/filepath"
 
 	"github.com/davidcavazos/testing-infra/pkg/utils"
 )
@@ -38,7 +40,6 @@ func main() {
 
 func affected(config utils.Config, diffs []string) []Job {
 	// TODO(dcavazos): Detect affected changes more granularly with the diffs.
-	// TODO(dcavazos): If '.' (root diffs) in pkgs, return all packages.
 	packages := make(map[string]bool)
 	for _, diff := range diffs {
 		if !config.Matches(diff) {
@@ -46,6 +47,26 @@ func affected(config utils.Config, diffs []string) []Job {
 		}
 		pkg := config.FindPackage(diff)
 		packages[pkg] = true
+	}
+
+	if packages["."] {
+		var jobs []Job
+		err := filepath.WalkDir(".", func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if path == ".git" {
+				return filepath.SkipDir
+			}
+			if d.IsDir() && config.IsPackageDir(path) {
+				jobs = append(jobs, Job{Package: path})
+			}
+			return nil
+		})
+		if err != nil {
+			panic(err)
+		}
+		return jobs
 	}
 
 	jobs := make([]Job, 0, len(packages))
