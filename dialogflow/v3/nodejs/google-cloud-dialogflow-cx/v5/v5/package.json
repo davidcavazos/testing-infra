@@ -1,0 +1,11 @@
+{
+  "name": "example",
+  "private": true,
+  "description": "Google Cloud Platform Code Samples 🎒",
+  "dependencies": {
+    "@google-cloud/dialogflow-cx": "^5.3.0"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}
